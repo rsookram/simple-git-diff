@@ -10,6 +10,6 @@ fn main() {
     stdin
         .lock()
         .lines()
-        .filter_map(|line| line.ok().map(State::next))
+        .filter_map(|line| line.ok().and_then(State::next))
         .for_each(|line| println!("{}", line));
 }

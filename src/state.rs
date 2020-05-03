@@ -1,23 +1,29 @@
 pub struct State {}
 
 impl State {
-    pub fn next(line: String) -> String {
-        if is_index(&line) {
-            String::new()
+    pub fn next(line: String) -> Option<String> {
+        if is_diff(&line) {
+            None
+        } else if is_index(&line) {
+            Some(horizontal_rule())
         } else if is_addition(&line) {
-            line[6..].to_string()
+            Some(line[6..].to_string())
         } else if is_removal(&line) {
             let mut without_minus = String::with_capacity(line.len() - 1);
             without_minus.push_str("\x1B[31m");
             without_minus.push_str(&line[6..]);
 
-            without_minus
+            Some(without_minus)
         } else if is_context(&line) {
-            line[1..].to_string()
+            Some(line[1..].to_string())
         } else {
-            line
+            Some(line)
         }
     }
+}
+
+fn is_diff(line: &str) -> bool {
+    line.starts_with("\x1B[1mdiff ")
 }
 
 fn is_index(line: &str) -> bool {
@@ -34,4 +40,10 @@ fn is_removal(line: &str) -> bool {
 
 fn is_context(line: &str) -> bool {
     line.starts_with(' ')
+}
+
+fn horizontal_rule() -> String {
+    let length = 79;
+    // \u{2500} is an em dash
+    "\u{2500}".repeat(length)
 }
