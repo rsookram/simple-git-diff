@@ -6,6 +6,10 @@ impl State {
             None
         } else if is_index(&line) {
             Some(horizontal_rule())
+        } else if is_old_filepath(&line) {
+            Some(line.replacen('-', " ", 1))
+        } else if is_new_filepath(&line) {
+            Some(line.replacen('+', " ", 1))
         } else if is_addition(&line) {
             Some(line[6..].to_string())
         } else if is_removal(&line) {
@@ -28,6 +32,14 @@ fn is_diff(line: &str) -> bool {
 
 fn is_index(line: &str) -> bool {
     line.starts_with("\x1B[1mindex ")
+}
+
+fn is_old_filepath(line: &str) -> bool {
+    line.starts_with("\x1B[1m--- ")
+}
+
+fn is_new_filepath(line: &str) -> bool {
+    line.starts_with("\x1B[1m+++ ")
 }
 
 fn is_addition(line: &str) -> bool {
