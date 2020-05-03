@@ -60,7 +60,8 @@ fn is_context(line: &str) -> bool {
 }
 
 fn horizontal_rule() -> String {
+    let em_dash = "\u{2500}";
     let length = 79;
-    // \u{2500} is an em dash
-    "\u{2500}".repeat(length)
+
+    em_dash.repeat(length)
 }
