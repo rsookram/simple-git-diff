@@ -9,7 +9,12 @@ impl State {
         } else if is_old_filepath(&line) {
             Some(line.replacen('-', " ", 1))
         } else if is_new_filepath(&line) {
-            Some(line.replacen('+', " ", 1))
+            let mut line = line.replacen('+', " ", 1);
+
+            line.push_str("\n");
+            line.push_str(&horizontal_rule());
+
+            Some(line)
         } else if is_addition(&line) {
             Some(line[6..].to_string())
         } else if is_removal(&line) {
