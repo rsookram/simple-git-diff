@@ -18,11 +18,9 @@ impl State {
         } else if is_addition(&line) {
             Some(line[6..].to_string())
         } else if is_removal(&line) {
-            let mut without_minus = String::with_capacity(line.len() - 1);
-            without_minus.push_str("\x1B[31m");
-            without_minus.push_str(&line[6..]);
+            let line = line.replacen('-', "", 1);
 
-            Some(without_minus)
+            Some(line)
         } else if is_context(&line) {
             Some(line[1..].to_string())
         } else if is_no_newline_at_eof(&line) {
