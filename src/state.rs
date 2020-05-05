@@ -15,6 +15,10 @@ impl State {
             line.push_str(&horizontal_rule());
 
             Some(line)
+        } else if is_binary_files_differ(&line) {
+            line.push_str("\n");
+            line.push_str(&horizontal_rule());
+            Some(line)
         } else if is_addition(&line) {
             Some(line[6..].to_string())
         } else if is_removal(&line) {
@@ -46,6 +50,10 @@ fn is_old_filepath(line: &str) -> bool {
 
 fn is_new_filepath(line: &str) -> bool {
     line.starts_with("\x1B[1m+++ ")
+}
+
+fn is_binary_files_differ(line: &str) -> bool {
+    line.starts_with("Binary files ") && line.ends_with(" differ")
 }
 
 fn is_addition(line: &str) -> bool {
