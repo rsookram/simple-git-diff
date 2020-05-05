@@ -3,7 +3,8 @@ pub struct State {}
 impl State {
     pub fn next(mut line: String) -> Option<String> {
         if is_diff(&line) {
-            None
+            line.clear();
+            Some(line)
         } else if is_index(&line) {
             Some(horizontal_rule())
         } else if is_old_filepath(&line) {
@@ -27,9 +28,6 @@ impl State {
             Some(line)
         } else if is_context(&line) {
             Some(line[1..].to_string())
-        } else if is_no_newline_at_eof(&line) {
-            line.push_str("\n");
-            Some(line)
         } else {
             Some(line)
         }
@@ -66,10 +64,6 @@ fn is_removal(line: &str) -> bool {
 
 fn is_context(line: &str) -> bool {
     line.starts_with(' ')
-}
-
-fn is_no_newline_at_eof(line: &str) -> bool {
-    line.starts_with("\\ No newline at end of file")
 }
 
 fn horizontal_rule() -> String {
