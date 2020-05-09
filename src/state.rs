@@ -31,9 +31,21 @@ impl State {
                 line.push_str(&horizontal_rule(self.width));
                 Some(line)
             }
-            Line::Addition => Some(line[6..].to_string()),
+            Line::Addition => {
+                let mut line = line[6..].to_string();
+                // Mark the first character of an added newline
+                if line.len() < 10 {
+                    line.push_str("\x1B[32m\x1B[7m \x1B[m");
+                }
+                Some(line)
+            }
             Line::Removal => {
-                let line = line.replacen('-', "", 1);
+                let mut line = line.replacen('-', "", 1);
+
+                // Mark the first character of a removed newline
+                if line.len() < 10 {
+                    line.push_str("\x1B[31m\x1B[7m \x1B[m");
+                }
 
                 Some(line)
             }
