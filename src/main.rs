@@ -10,10 +10,12 @@ fn main() {
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
 
+    let state = State::new();
+
     let result = stdin
         .lock()
         .lines()
-        .filter_map(|line| line.ok().and_then(State::next))
+        .filter_map(|line| line.ok().and_then(|line| state.next(line)))
         .try_for_each(|line| writeln!(stdout, "{}", line));
 
     match result {

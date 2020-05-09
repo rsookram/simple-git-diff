@@ -1,25 +1,34 @@
-pub struct State {}
+pub struct State {
+    width: usize,
+}
 
 impl State {
-    pub fn next(mut line: String) -> Option<String> {
+    pub fn new() -> Self {
+        let size = term_size::dimensions();
+        let width = size.map_or(79, |(w, _)| w) as usize;
+
+        State { width }
+    }
+
+    pub fn next(&self, mut line: String) -> Option<String> {
         match Line::type_of(&line) {
             Line::Diff => {
                 line.clear();
                 Some(line)
             }
-            Line::Index => Some(horizontal_rule()),
+            Line::Index => Some(horizontal_rule(self.width)),
             Line::OldFilepath => Some(line.replacen('-', " ", 1)),
             Line::NewFilepath => {
                 let mut line = line.replacen('+', " ", 1);
 
                 line.push_str("\n");
-                line.push_str(&horizontal_rule());
+                line.push_str(&horizontal_rule(self.width));
 
                 Some(line)
             }
             Line::BinaryFilesDiffer => {
                 line.push_str("\n");
-                line.push_str(&horizontal_rule());
+                line.push_str(&horizontal_rule(self.width));
                 Some(line)
             }
             Line::Addition => Some(line[6..].to_string()),
@@ -70,9 +79,8 @@ impl Line {
     }
 }
 
-fn horizontal_rule() -> String {
+fn horizontal_rule(length: usize) -> String {
     let em_dash = "\u{2500}";
-    let length = 79;
 
     em_dash.repeat(length)
 }
