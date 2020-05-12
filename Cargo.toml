@@ -4,6 +4,11 @@ version = "0.1.0"
 authors = ["rsookram <rashadsookram@gmail.com>"]
 edition = "2018"
 description = "Command-line tool to simplify diff output from git"
+readme = "README.md"
+repository = "https://github.com/rsookram/simple-git-diff"
+license = "MIT OR Apache-2.0"
+keywords = ["git", "diff"]
+categories = ["command-line-utilities", "development-tools"]
 
 [dependencies]
 term_size = "0.3.2"
