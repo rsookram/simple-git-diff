@@ -3,6 +3,7 @@ name = "simple-git-diff"
 version = "0.1.0"
 authors = ["rsookram <rashadsookram@gmail.com>"]
 edition = "2018"
+description = "Command-line tool to simplify diff output from git"
 
 [dependencies]
 term_size = "0.3.2"

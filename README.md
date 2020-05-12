@@ -1,5 +1,7 @@
 # simple-git-diff
 
+simple-git-diff simplifies diff output for git on the command line.
+
 ## Installation
 
 Currently, pre-compiled binaries of simple-git-diff aren't being distributed.
