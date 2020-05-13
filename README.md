@@ -1,6 +1,7 @@
 # simple-git-diff
 
-simple-git-diff simplifies diff output for git on the command line.
+simple-git-diff simplifies diff output for git on the command line. Inspired by
+[diff-so-fancy](https://github.com/so-fancy/diff-so-fancy).
 
 ## Installation
 
@@ -23,6 +24,11 @@ git clone https://github.com/rsookram/simple-git-diff
 cd simple-git-diff
 cargo build --release
 ```
+
+## Dependencies
+
+The [`term_size`](https://crates.io/crates/term_size) crate is used when
+drawing horizontal dividers which span the width of the terminal.
 
 ## License
 
