@@ -14,6 +14,22 @@ running
 cargo install --git https://github.com/rsookram/simple-git-diff
 ```
 
+## Usage
+
+Git can be configured to use simple-git-diff for all diff output with
+
+```shell
+git config --global core.pager 'simple-git-diff | less --tabs=4 -RFX'
+```
+
+If you want to try it out without changing your git settings, you can use the
+[`GIT_PAGER`](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables)
+environment variable like:
+
+```shell
+GIT_PAGER='simple-git-diff | less --tabs=4 -RFX' git diff
+```
+
 ## Building
 
 simple-git-diff can be built from source by cloning this repository and using
