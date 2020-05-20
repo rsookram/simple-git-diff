@@ -13,19 +13,39 @@ impl State {
     pub fn next(&self, mut line: String) -> Option<String> {
         match Line::type_of(&line) {
             Line::Diff => {
-                line.clear();
-                Some(line)
-            }
-            Line::Index => Some(horizontal_rule(self.width)),
-            Line::OldFilepath => Some(line.replacen('-', " ", 1)),
-            Line::NewFilepath => {
-                let mut line = line.replacen('+', " ", 1);
+                let mut new_line = horizontal_rule(self.width);
 
-                line.push_str("\n");
-                line.push_str(&horizontal_rule(self.width));
+                // Best effort to find old and new filename
+                if line.matches(" b/").take(2).count() > 1 {
+                    new_line.push_str(&line.replacen("diff --git a/", "", 1));
+                    return Some(new_line);
+                }
 
-                Some(line)
+                let old_file_end = if let Some(i) = line.find(" b/") {
+                    i
+                } else {
+                    new_line.push_str(&line.replacen("diff --git a/", "", 1));
+                    return Some(new_line);
+                };
+
+                let mut result = String::new();
+                result.push_str(&horizontal_rule(self.width));
+                result.push('\n');
+
+                let old_file_name = &line[17..old_file_end];
+                result.push_str("\x1B[1m -- ");
+                result.push_str(old_file_name);
+
+                result.push('\n');
+
+                let new_file_name = &line[old_file_end + 3..];
+                result.push_str("\x1B[1m ++ ");
+                result.push_str(new_file_name);
+
+                Some(result)
             }
+            Line::Index | Line::OldFilepath => None,
+            Line::NewFilepath => Some(horizontal_rule(self.width)),
             Line::BinaryFilesDiffer => {
                 line.push_str("\n");
                 line.push_str(&horizontal_rule(self.width));
