@@ -111,6 +111,8 @@ impl Line {
     }
 }
 
+/// Creates a `String` of the given `length` which can be used as a divider
+/// between sections of the output.
 fn horizontal_rule(length: usize) -> String {
     let em_dash = "\u{2500}";
 
